@@ -1,0 +1,23 @@
+class Solution {
+  public:
+    vector<vector<int>> ans;
+    void path(Node* root,vector<int> a){
+        if(!root){
+            return;
+        }
+        if(!root->left and !root->right){
+            a.push_back(root->data);
+            ans.push_back(a);
+            return;
+        }
+        a.push_back(root->data);
+        path(root->left,a);
+        path(root->right,a);
+    }
+    vector<vector<int>> Paths(Node* root) {
+        // code here
+        vector<int> v;
+        path(root,v);
+        return ans;
+    }
+};
