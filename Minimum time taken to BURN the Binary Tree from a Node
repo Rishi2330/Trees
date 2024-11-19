@@ -1,0 +1,72 @@
+class Solution {
+  public:
+     Node* setNodetoTheParent(Node* root, int target, unordered_map<Node*, Node*> &mp){
+        queue<Node*> q;
+        q.push(root);
+        mp[root]= nullptr;
+        Node* getTargetNode= nullptr;
+        while(!q.empty()){
+            Node* front= q.front();
+            q.pop();
+            if(target==front->data){
+                getTargetNode= front;
+            }
+            if(front->left){
+                q.push(front->left);
+                mp[front->left]= front;
+                
+            }
+            if(front->right){
+                q.push(front->right);
+                mp[front->right]= front;
+                
+            }
+        }
+        return getTargetNode;
+        
+    }
+    int answer(unordered_map<Node*,Node*> mp, Node* targetNode){
+        int count= 0;
+        queue<Node*> q;
+        q.push(targetNode);
+        unordered_map<Node*, bool> visited;
+        visited[targetNode]= true;
+        while(!q.empty()){
+            int size= q.size();
+            bool flag= false;
+            for(int i=0; i<size; i++){
+            Node* front= q.front();
+            q.pop();
+            if(front->left and !visited[front->left]){
+                q.push(front->left);
+                visited[front->left]= true;
+                flag= true;
+            }
+            if(front->right and !visited[front->right]){
+                q.push(front->right);
+                visited[front->right]= true;
+                flag= true;
+            }
+            if(mp[front] and !visited[mp[front]]){
+                q.push(mp[front]);
+                visited[mp[front]]= true;
+                flag= true;
+            }
+        }
+        if (flag==true){
+            count++;
+        }
+        }
+        return count;
+        
+        
+    }
+  public:
+    int minTime(Node* root, int target) 
+    {
+        unordered_map<Node*, Node*> mp;
+        Node* getTarget= setNodetoTheParent(root, target,mp );
+        int ans= answer(mp, getTarget);
+        return ans;
+    }
+};
